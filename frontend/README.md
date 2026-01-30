@@ -1,6 +1,6 @@
 # Frontend - Angular Application
 
-Angular 19 standalone application with Tailwind CSS v4 and Signal-based state management.
+Angular 21 standalone application with Tailwind CSS v4 and Signal-based state management.
 
 ## 🏗️ Architecture
 
@@ -281,7 +281,7 @@ export class MessageListComponent {
 
 - **Simpler:** Less boilerplate, easier to understand
 - **Performant:** Fine-grained reactivity
-- **Native:** Built into Angular 19
+- **Native:** Built into Angular 21
 - **Type-safe:** Full TypeScript support
 - **Composable:** Easy to combine with `computed()`
 
@@ -667,6 +667,6 @@ npx webpack-bundle-analyzer dist/frontend/browser/stats.json
 ---
 
 **Frontend Status:** Active Development  
-**Angular Version:** 19  
+**Angular Version:** 21  
 **Node Version:** 22 LTS  
-**Last Updated:** January 15, 2026
+**Last Updated:** January 30, 2026

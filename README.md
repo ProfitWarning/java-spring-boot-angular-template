@@ -1,11 +1,11 @@
 # Spring Boot + Angular Full-Stack Monorepo
 
-Modern full-stack application template with Spring Boot 3, Angular 19, PostgreSQL, and Caffeine in-memory cache.
+Modern full-stack application template with Spring Boot 3, Angular 21, PostgreSQL, and Caffeine in-memory cache.
 
 ## 🏗️ Architecture
 
 - **Backend:** Spring Boot 3.5.9, Java 25, PostgreSQL 17, Caffeine cache
-- **Frontend:** Angular 19 (standalone components), Tailwind CSS v4
+- **Frontend:** Angular 21 (standalone components), Tailwind CSS v4
 - **Development:** Docker Compose with devcontainer support
 - **State Management:** Angular Signals
 
@@ -203,10 +203,10 @@ npm run db:migrate
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Angular | 19 | Frontend framework |
-| TypeScript | 5.7 | Programming language |
+| Angular | 21 | Frontend framework |
+| TypeScript | 5.9 | Programming language |
 | Tailwind CSS | 4.1.18 | Styling framework |
-| RxJS | 7.x | Reactive programming |
+| RxJS | 7.8 | Reactive programming |
 | Signals | - | State management |
 
 ### DevOps
