@@ -37,32 +37,6 @@ Modern full-stack application template with Spring Boot 3, Angular 21, PostgreSQ
 ├── README.md          # This file
 └── package.json       # Monorepo scripts
 ```
-/
-├── backend/           # Spring Boot REST API
-│   ├── src/
-│   │   ├── main/java/
-│   │   └── test/java/
-│   ├── pom.xml
-│   ├── Dockerfile
-│   └── README.md
-│
-├── frontend/          # Angular SPA
-│   ├── src/
-│   ├── package.json
-│   ├── angular.json
-│   └── README.md
-│
-├── .devcontainer/     # Dev environment configuration
-│   ├── devcontainer.json
-│   ├── docker-compose.yml
-│   ├── Dockerfile
-│   └── start-servers.sh
-│
-├── .vscode/           # IDE tasks and settings
-├── docs/              # Documentation
-│   └── planning/      # Planning documents
-└── package.json       # Monorepo scripts
-```
 
 ## 🚀 Quick Start
 
