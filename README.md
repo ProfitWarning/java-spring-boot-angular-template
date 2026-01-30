@@ -4,7 +4,7 @@ Modern full-stack application template with Spring Boot 3, Angular 19, PostgreSQ
 
 ## 🏗️ Architecture
 
-- **Backend:** Spring Boot 3.5.9, Java 21, PostgreSQL 17, Redis 7.4
+- **Backend:** Spring Boot 3.5.9, Java 25, PostgreSQL 17, Redis 7.4
 - **Frontend:** Angular 19 (standalone components), Tailwind CSS v4
 - **Development:** Docker Compose with devcontainer support
 - **State Management:** Angular Signals
@@ -193,7 +193,7 @@ npm run db:migrate
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | Spring Boot | 3.5.9 | Application framework |
-| Java | 21 | Programming language |
+| Java | 25 | Programming language |
 | PostgreSQL | 17 | Primary database |
 | Redis | 7.4 | Caching layer |
 | Flyway | - | Database migrations |

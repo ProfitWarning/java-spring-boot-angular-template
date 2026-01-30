@@ -471,5 +471,5 @@ mvn clean
 
 **Backend Status:** Active Development  
 **Spring Boot Version:** 3.5.9  
-**Java Version:** 21  
-**Last Updated:** January 15, 2026
+**Java Version:** 25  
+**Last Updated:** January 30, 2026
