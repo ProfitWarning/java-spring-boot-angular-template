@@ -34,8 +34,6 @@ Modern full-stack application template with Spring Boot 3, Angular 21, PostgreSQ
 │   └── start-servers.sh
 │
 ├── .vscode/           # IDE tasks and settings
-├── docs/              # Documentation
-│   └── planning/      # Planning documents
 └── package.json       # Monorepo scripts
 ```
 
@@ -181,10 +179,6 @@ npm run db:migrate
 
 - **[Backend Documentation](./backend/README.md)** - Spring Boot API details
 - **[Frontend Documentation](./frontend/README.md)** - Angular application guide
-- **[OpenShift Deployment](./docs/planning/OPENSHIFT_DEPLOYMENT.md)** - Production deployment guide
-- **[Devcontainer Setup](./docs/planning/DEVCONTAINER.md)** - Development environment details
-- **[Angular Integration](./docs/planning/ANGULAR_INTEGRATION.md)** - Frontend integration guide
-- **[Windows Local Setup](./docs/planning/WINDOWS_LOCAL.md)** - Local development on Windows
 
 ## 🛠️ Technology Stack
 

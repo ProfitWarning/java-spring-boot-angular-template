@@ -647,7 +647,6 @@ npx webpack-bundle-analyzer dist/frontend/browser/stats.json
 
 - **[Root README](../README.md)** - Monorepo overview
 - **[Backend README](../backend/README.md)** - Spring Boot API
-- **[Angular Integration Plan](../docs/planning/ANGULAR_INTEGRATION.md)** - Integration details
 
 ## 📖 Resources
 
