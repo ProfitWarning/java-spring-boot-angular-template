@@ -33,7 +33,8 @@ Modern full-stack application template with Spring Boot 3, Angular 21, PostgreSQ
 │   ├── Dockerfile
 │   └── start-servers.sh
 │
-├── .vscode/           # IDE tasks and settings
+├── LICENSE            # MIT License
+├── README.md          # This file
 └── package.json       # Monorepo scripts
 ```
 
