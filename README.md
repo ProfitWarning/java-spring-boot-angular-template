@@ -369,12 +369,12 @@ taskkill /PID <PID> /F
 
 ## 📄 License
 
-[Your License Here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 **Project Status:** Active Development
 
-**Last Updated:** January 15, 2026
+**Last Updated:** January 30, 2026
 
 For detailed backend and frontend documentation, see the respective README files in `backend/` and `frontend/` directories.
