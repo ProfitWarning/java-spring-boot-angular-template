@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - maven-repo:/root/.m2
+      - node-modules:/workspace/node_modules
+      - angular-node-modules:/workspace/frontend/node_modules
+      - intellij-settings:/root/.IntelliJIdea
+      - vscode-server:/root/.vscode-server
+      - vscode-server-insiders:/root/.vscode-server-insiders
+      - bash-history:/root/history
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/apidb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - NG_CLI_ANALYTICS=false
+    ports:
+      - "8080:8080"
+      - "4200:4200"
+    depends_on:
+      - db
+    command: sleep infinity
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_DB=apidb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  maven-repo:
+  node-modules:
+  angular-node-modules:
+  postgres-data:
+  intellij-settings:
+  vscode-server:
+  vscode-server-insiders:
+  bash-history:
