@@ -33,6 +33,31 @@ Modern full-stack application template with Spring Boot 3, Angular 21, PostgreSQ
 │   ├── Dockerfile
 │   └── start-servers.sh
 │
+├── LICENSE            # MIT License
+├── README.md          # This file
+└── package.json       # Monorepo scripts
+```
+/
+├── backend/           # Spring Boot REST API
+│   ├── src/
+│   │   ├── main/java/
+│   │   └── test/java/
+│   ├── pom.xml
+│   ├── Dockerfile
+│   └── README.md
+│
+├── frontend/          # Angular SPA
+│   ├── src/
+│   ├── package.json
+│   ├── angular.json
+│   └── README.md
+│
+├── .devcontainer/     # Dev environment configuration
+│   ├── devcontainer.json
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   └── start-servers.sh
+│
 ├── .vscode/           # IDE tasks and settings
 ├── docs/              # Documentation
 │   └── planning/      # Planning documents
@@ -181,10 +206,6 @@ npm run db:migrate
 
 - **[Backend Documentation](./backend/README.md)** - Spring Boot API details
 - **[Frontend Documentation](./frontend/README.md)** - Angular application guide
-- **[OpenShift Deployment](./docs/planning/OPENSHIFT_DEPLOYMENT.md)** - Production deployment guide
-- **[Devcontainer Setup](./docs/planning/DEVCONTAINER.md)** - Development environment details
-- **[Angular Integration](./docs/planning/ANGULAR_INTEGRATION.md)** - Frontend integration guide
-- **[Windows Local Setup](./docs/planning/WINDOWS_LOCAL.md)** - Local development on Windows
 
 ## 🛠️ Technology Stack
 

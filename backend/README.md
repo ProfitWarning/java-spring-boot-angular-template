@@ -539,7 +539,6 @@ mvn clean
 
 - **[Root README](../README.md)** - Monorepo overview
 - **[Frontend README](../frontend/README.md)** - Angular application
-- **[OpenShift Deployment](../docs/planning/OPENSHIFT_DEPLOYMENT.md)** - Production deployment
 
 ---
 
