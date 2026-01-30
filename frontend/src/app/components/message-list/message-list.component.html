@@ -1,0 +1,56 @@
+<div class="bg-white shadow-md rounded-lg p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold text-gray-800">Messages</h2>
+    <button 
+      (click)="loadMessages()" 
+      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+      [disabled]="messageSignals.loading()">
+      @if (messageSignals.loading()) {
+        <span>Loading...</span>
+      } @else {
+        <span>Refresh</span>
+      }
+    </button>
+  </div>
+
+  @if (messageSignals.loading()) {
+    <div class="text-center py-8">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
+      <p class="mt-2 text-gray-600">Loading messages...</p>
+    </div>
+  }
+
+  @if (messageSignals.hasError()) {
+    <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-4">
+      <p class="font-semibold">Error:</p>
+      <p>{{ messageSignals.error() }}</p>
+    </div>
+  }
+
+  @if (!messageSignals.loading() && !messageSignals.hasMessages()) {
+    <div class="text-center py-8 text-gray-500">
+      <p>No messages found. Create your first message!</p>
+    </div>
+  }
+
+  @if (messageSignals.hasMessages()) {
+    <div class="space-y-3">
+      @for (message of messageSignals.messages(); track message.id) {
+        <div 
+          (click)="selectMessage(message)"
+          class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+          [class.bg-blue-50]="messageSignals.selectedMessage()?.id === message.id"
+          [class.border-blue-300]="messageSignals.selectedMessage()?.id === message.id">
+          <div class="flex justify-between items-start">
+            <p class="text-gray-800 flex-1">{{ message.content }}</p>
+            <span class="text-xs text-gray-500 ml-4">{{ formatDate(message.createdAt) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="mt-4 text-sm text-gray-600">
+      Total messages: {{ messageSignals.messageCount() }}
+    </div>
+  }
+</div>
