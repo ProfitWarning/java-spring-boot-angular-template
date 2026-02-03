@@ -81,6 +81,6 @@
     5432,
     6379
   ],
-  "postCreateCommand": "git config --global core.autocrlf input && cd backend && mvn dependency:resolve && npm install",
+  "postCreateCommand": "git config --global core.autocrlf input && npm install && cd backend && mvn dependency:resolve ",
   "remoteUser": "root"
 }
