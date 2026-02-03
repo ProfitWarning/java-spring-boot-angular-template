@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   app:
+    image: spring_boot_angular_template-app:latest
+    pull_policy: never
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
