@@ -86,43 +86,6 @@ RUN curl -fsSL "https://deb.nodesource.com/setup_${NODE_VERSION}.x" | bash - \
 # Verify Node.js and Angular CLI installations
 RUN node --version && npm --version && ng version
 
-# Install Google Chrome (stable) only on amd64; skip entirely on arm64
-RUN set -eux; \
-    arch="$(dpkg --print-architecture)"; \
-    if [ "$arch" = "amd64" ]; then \
-      apt-get update && apt-get install -y \
-        libnss3 \
-        libatk1.0-0 \
-        libatk-bridge2.0-0 \
-        libcups2 \
-        libdrm2 \
-        libxkbcommon0 \
-        libxcomposite1 \
-        libxdamage1 \
-        libxfixes3 \
-        libxrandr2 \
-        libgbm1 \
-        libasound2t64 \
-        libpangocairo-1.0-0 \
-        libgtk-3-0 \
-        libxss1 \
-        libappindicator3-1 \
-        fonts-liberation \
-        fonts-noto-color-emoji \
-        xdg-utils; \
-      wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb; \
-      apt-get install -y ./google-chrome-stable_current_amd64.deb; \
-      rm -f google-chrome-stable_current_amd64.deb; \
-      rm -rf /var/lib/apt/lists/*; \
-      ln -sf /usr/bin/google-chrome /usr/local/bin/chrome; \
-    else \
-      echo "Skipping Google Chrome on $arch"; \
-    fi
-
-# Set Chrome environment variables for testing (will only be valid on amd64)
-ENV CHROME_BIN=/usr/local/bin/chrome
-ENV CHROME_PATH=/usr/local/bin/chrome
-
 WORKDIR /workspace
 
 # Keep container running
