@@ -536,7 +536,7 @@ Development proxy for backend API:
 
 ## 🔍 Debugging
 
-### Chrome DevTools
+### Browser DevTools
 
 1. **Open DevTools:** F12 or Ctrl+Shift+I
 2. **Angular DevTools Extension:** Install for component inspection
