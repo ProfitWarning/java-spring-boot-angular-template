@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   app:
+    image: spring_boot_angular_template-app:latest
+    pull_policy: never
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
@@ -25,6 +27,7 @@ services:
       - "4200:4200"
     depends_on:
       - db
+      - redis
     command: sleep infinity
 
   db:
@@ -38,11 +41,20 @@ services:
     ports:
       - "5432:5432"
 
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 volumes:
   maven-repo:
   node-modules:
   angular-node-modules:
   postgres-data:
+  redis-data:
   intellij-settings:
   vscode-server:
   vscode-server-insiders:

@@ -5,7 +5,7 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {} 
+    "ghcr.io/devcontainers/features/common-utils:2": {}
   },
   "customizations": {
     "vscode": {
@@ -32,7 +32,7 @@
         "eamodio.gitlens",
         "humao.rest-client",
         "GitHub.copilot",
-        "GitHub.copilot-chat"        
+        "GitHub.copilot-chat"
       ],
       "settings": {
         "java.jdt.ls.java.home": "/opt/java/openjdk",
@@ -75,7 +75,12 @@
       ]
     }
   },
-  "forwardPorts": [8080, 4200, 5432, 6379],
-  "postCreateCommand": "git config --global core.autocrlf input && cd backend && mvn dependency:resolve",
+  "forwardPorts": [
+    8080,
+    4200,
+    5432,
+    6379
+  ],
+  "postCreateCommand": "git config --global core.autocrlf input && npm install && cd backend && mvn dependency:resolve ",
   "remoteUser": "root"
 }
