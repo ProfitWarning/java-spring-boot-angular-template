@@ -176,6 +176,85 @@ npm run db:migrate
 - **TTL:** 10 minutes (expireAfterWrite)
 - Used for caching message queries
 
+## 🐳 Docker & Production Deployment
+
+This template includes production-ready Docker configurations for local testing and deployment.
+
+### Quick Commands
+
+```bash
+# Development mode (hot-reload)
+npm run docker:up && npm run dev
+
+# Production mode (local testing)
+npm run docker:prod      # Build & run production stack
+```
+
+### What's Included
+
+- ✅ **Production-optimized Dockerfiles** - Multi-stage builds with non-root users
+- ✅ **docker-compose.prod.yml** - Complete production stack for local testing
+- ✅ **Network segmentation** - Secure app-tier and db-tier networks
+- ✅ **Security best practices** - Non-root containers, minimal images, health checks
+- ✅ **Nginx-based serving** - Production-grade Angular delivery with gzip & caching
+
+### Production Image Sizes (Approximate)
+
+- **Backend:** ~200 MB (Eclipse Temurin JRE 25 Alpine)
+- **Frontend:** ~25 MB (Nginx 1.29 Alpine + static assets)
+- **Total:** ~225 MB
+
+### Access Production Stack
+
+Once running with `npm run docker:prod`:
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:8080
+- Actuator Health: http://localhost:8080/actuator/health
+- Database: Internal only (use `docker exec` for access)
+
+### Comprehensive Documentation
+
+For detailed information including:
+- 🏗️ Building production images
+- 🚀 Deployment strategies (Docker Compose, Kubernetes, Cloud platforms)
+- 🔒 Security best practices and hardening
+- 🔧 Customization guide (ports, nginx config, environment variables)
+- 🐛 Troubleshooting common issues
+- 📚 CI/CD integration examples
+
+See **[DOCKER.md](./DOCKER.md)**
+
+### Docker Commands Reference
+
+```bash
+# Build images
+npm run docker:build              # Build all images
+npm run docker:build:backend      # Backend only
+npm run docker:build:frontend     # Frontend only
+
+# Production stack management
+npm run docker:prod               # Build & start (all-in-one)
+npm run docker:prod:up            # Start services
+npm run docker:prod:down          # Stop services
+npm run docker:prod:logs          # View logs
+npm run docker:prod:restart       # Restart all services
+npm run docker:prod:clean         # Stop and remove volumes
+
+# Development services (PostgreSQL, Redis)
+npm run docker:up                 # Start dev services
+npm run docker:down               # Stop dev services
+npm run docker:logs               # View dev logs
+```
+
+### Security Features
+
+All Docker images implement security best practices:
+- ✅ **Non-root users** - Backend runs as `spring:spring`, Frontend as `angular:angular`
+- ✅ **Minimal base images** - Alpine Linux for smaller attack surface
+- ✅ **Multi-stage builds** - Build tools not included in final images
+- ✅ **Network isolation** - Database segregated on private network
+- ✅ **No hardcoded secrets** - Environment-based configuration
+
 ## 📚 Documentation
 
 - **[Backend Documentation](./backend/README.md)** - Spring Boot API details

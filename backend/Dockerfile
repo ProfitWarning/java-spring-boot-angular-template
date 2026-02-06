@@ -13,10 +13,11 @@ WORKDIR /app
 
 # Create a non-root user for OpenShift compatibility
 RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
 
 # Copy the jar from build stage
-COPY --from=builder /workspace/target/api-service.jar app.jar
+COPY --from=builder --chown=spring:spring /workspace/target/api-service.jar app.jar
+
+USER spring:spring
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

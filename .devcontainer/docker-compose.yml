@@ -7,6 +7,8 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
+    networks:
+      - spring-angular-net
     volumes:
       - ..:/workspace:cached
       - maven-repo:/root/.m2
@@ -32,6 +34,8 @@ services:
 
   db:
     image: postgres:17-alpine
+    networks:
+      - spring-angular-net
     environment:
       - POSTGRES_DB=apidb
       - POSTGRES_USER=postgres
@@ -43,6 +47,8 @@ services:
 
   redis:
     image: redis:7.4-alpine
+    networks:
+      - spring-angular-net
     command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
     ports:
       - "6379:6379"
@@ -59,3 +65,11 @@ volumes:
   vscode-server:
   vscode-server-insiders:
   bash-history:
+
+# ============================================
+# Networks: Explicit naming for consistency
+# ============================================
+networks:
+  spring-angular-net:
+    name: spring-angular-net
+    driver: bridge

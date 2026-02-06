@@ -643,6 +643,120 @@ npx webpack-bundle-analyzer dist/frontend/browser/stats.json
    git push origin feature/my-feature
    ```
 
+## 🐳 Docker
+
+### Production Dockerfile
+
+The frontend includes a production-ready Dockerfile with:
+- Multi-stage build (Node.js builder + Nginx server)
+- Non-root user (`angular:angular`)
+- Optimized for size (~25 MB)
+- Nginx 1.29 Alpine with production configuration
+
+### Building the Image
+
+```bash
+# From project root (recommended)
+npm run docker:build:frontend
+
+# Or from frontend directory
+cd frontend
+docker build -t spring-angular-template/frontend:latest .
+
+# Tag for registry
+docker tag spring-angular-template/frontend:latest myregistry.com/frontend:1.0.0
+```
+
+### Running Standalone
+
+```bash
+# Run frontend container
+docker run -d \
+  --name angular-frontend \
+  -p 4200:8080 \
+  -e NGINX_HOST=localhost \
+  -e BACKEND_URL=http://host.docker.internal:8080 \
+  spring-angular-template/frontend:latest
+
+# Access application
+open http://localhost:4200
+
+# View logs
+docker logs -f angular-frontend
+```
+
+### Production Stack
+
+For complete production environment with backend:
+
+```bash
+# From project root
+npm run docker:prod
+
+# Access application
+open http://localhost:4200
+```
+
+### Nginx Configuration
+
+The custom `nginx.conf.template` provides:
+- ✅ **Angular routing support** - SPA fallback to index.html
+- ✅ **Gzip compression** - Faster content delivery
+- ✅ **Security headers** - XSS, clickjacking protection
+- ✅ **Caching strategy** - Aggressive for assets, none for index.html
+- ✅ **Health endpoint** - `/health` for monitoring
+- ✅ **Port 8080** - Non-privileged (mapped to 4200 externally)
+- ✅ **Runtime API target** - `BACKEND_URL` injected via envsubst
+
+### Customizing Nginx
+
+To modify nginx configuration:
+
+1. Edit `frontend/nginx.conf.template` (requires rebuild)
+2. Update environment variables in `docker-compose.prod.yml` (e.g., `BACKEND_URL`, `NGINX_HOST`) (no rebuild)
+3. Rebuild image if template changed: `npm run docker:build:frontend`
+4. Restart container
+
+**Common customizations:**
+- Change ports
+- Add SSL/TLS
+- Configure rate limiting
+- Add custom headers
+- Modify compression settings
+
+See comments in `nginx.conf.template` for guidance.
+
+### Build Optimization
+
+The Dockerfile uses `.dockerignore` to exclude:
+- Dependencies (`node_modules/`)
+- Build output (`dist/`, `.angular/`)
+- IDE files
+- Test files
+
+Build context is reduced from ~500 MB to ~5 MB, resulting in much faster builds.
+
+### Production vs Development
+
+| Aspect | Development (`ng serve`) | Production (Docker) |
+|--------|-------------------------|---------------------|
+| Server | Angular CLI dev server | Nginx |
+| Port | 4200 | 8080 (mapped to 4200) |
+| Build | JIT compilation | AOT compilation |
+| Size | ~500 MB (with node_modules) | ~25 MB |
+| Hot Reload | ✅ Yes | ❌ No (rebuild required) |
+| Optimizations | ❌ Minimal | ✅ Full (minification, tree-shaking) |
+| Caching | ❌ No | ✅ Yes (gzip, cache headers) |
+| Security Headers | ❌ No | ✅ Yes |
+
+### Further Documentation
+
+See [DOCKER.md](../DOCKER.md) for comprehensive Docker documentation including:
+- Production deployment strategies
+- Security hardening
+- CI/CD integration
+- Troubleshooting
+
 ## 🔗 Related Documentation
 
 - **[Root README](../README.md)** - Monorepo overview

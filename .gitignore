@@ -87,6 +87,7 @@ postgres-data/
 
 # Environment Variables #
 .env
+.env.prod
 .env.local
 .env.*.local
 !.devcontainer/.env
