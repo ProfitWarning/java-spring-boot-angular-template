@@ -785,7 +785,7 @@ Due to length, the full DOCKER.md content will be provided during implementation
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
-# Create a non-root user for OpenShift compatibility
+# Create a non-root user for compatibility with restricted container runtimes
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 

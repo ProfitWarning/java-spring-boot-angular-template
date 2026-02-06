@@ -194,14 +194,12 @@ mvn flyway:clean
 |---------|-------------|----------|
 | `dev` | Development profile | Local development with PostgreSQL |
 | `docker` | Docker Compose environment | Running in devcontainer |
-| `openshift` | Red Hat OpenShift | Production deployment |
 
 ### Profile Configuration Files
 
 - `application.properties` - Common configuration
 - `application-dev.properties` - Development overrides
 - `application-docker.properties` - Docker environment
-- `application-openshift.properties` - OpenShift deployment
 
 ### Environment Variables
 
