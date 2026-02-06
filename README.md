@@ -327,7 +327,6 @@ Backend is configured to accept requests from:
 
 - **`dev`** - Development (local H2 or PostgreSQL)
 - **`docker`** - Docker Compose environment
-- **`openshift`** - Red Hat OpenShift deployment
 
 Activate profile:
 ```bash
@@ -369,7 +368,6 @@ npm run build:frontend
 - ⏳ Pre-commit hooks (Husky)
 - ⏳ CI/CD with GitHub Actions
 - ⏳ SonarQube integration
-- ⏳ OpenShift deployment
 
 ## 🤝 Contributing
 
