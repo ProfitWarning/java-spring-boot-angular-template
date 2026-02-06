@@ -1,0 +1,53 @@
+# Dependencies (will be installed fresh in Docker)
+node_modules/
+
+# Build output (will be built fresh in Docker)
+dist/
+.angular/
+build/
+
+# Testing
+coverage/
+*.spec.ts
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation (not needed in image)
+*.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Docker files (prevent recursion)
+Dockerfile
+.dockerignore
+
+# Environment files (will be built into assets)
+.env.local
+.env.development
+.env.test

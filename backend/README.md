@@ -124,7 +124,9 @@ docker build -t api-service:latest .
 ```bash
 docker run -p 8080:8080 \
   -e SPRING_PROFILES_ACTIVE=docker \
-  -e DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/api_db \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/api_db \
+  -e SPRING_DATASOURCE_USERNAME=postgres \
+  -e SPRING_DATASOURCE_PASSWORD=postgres \
   api-service:latest
 ```
 
@@ -194,6 +196,7 @@ mvn flyway:clean
 |---------|-------------|----------|
 | `dev` | Development profile | Local development with PostgreSQL |
 | `docker` | Docker Compose environment | Running in devcontainer |
+| `prod` | Production profile | Production Docker deployment |
 | `openshift` | Red Hat OpenShift | Production deployment |
 
 ### Profile Configuration Files
@@ -208,11 +211,11 @@ mvn flyway:clean
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
 | `SPRING_PROFILES_ACTIVE` | Active profile | `dev` | No |
-| `DATABASE_URL` | PostgreSQL JDBC URL | `localhost:5432/api_db` | Yes |
-| `DATABASE_USERNAME` | Database username | `postgres` | Yes |
-| `DATABASE_PASSWORD` | Database password | `postgres` | Yes |
-| `REDIS_HOST` | Redis hostname | `localhost` | Yes |
-| `REDIS_PORT` | Redis port | `6379` | No |
+| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL | `localhost:5432/api_db` | Yes |
+| `SPRING_DATASOURCE_USERNAME` | Database username | `postgres` | Yes |
+| `SPRING_DATASOURCE_PASSWORD` | Database password | `postgres` | Yes |
+| `SPRING_REDIS_HOST` | Redis hostname | `localhost` | Yes (main branch) |
+| `SPRING_REDIS_PORT` | Redis port | `6379` | No (main branch) |
 | `SERVER_PORT` | Application port | `8080` | No |
 
 ### CORS Configuration
@@ -323,6 +326,9 @@ curl http://localhost:8080/api/v1/messages/1
 - **Cache Manager:** `RedisCacheManager`
 - **Serialization:** JSON
 - **TTL:** Configurable per cache
+
+**Note:** Redis is used on the `main` branch. The `java-25-caffeine-angular-21`
+branch uses in-memory Caffeine caching instead and does not require Redis.
 
 ### Cached Operations
 
@@ -460,6 +466,105 @@ mvn clean
    git commit -m "feat(backend): add my feature"
    git push origin feature/my-feature
    ```
+
+## 🐳 Docker
+
+### Production Dockerfile
+
+The backend includes a production-ready Dockerfile with:
+- Multi-stage build (Maven builder + JRE runtime)
+- Non-root user (`spring:spring`)
+- Optimized for size (~200 MB)
+- Based on Eclipse Temurin JRE 25 Alpine
+
+### Building the Image
+
+```bash
+# From project root (recommended)
+npm run docker:build:backend
+
+# Or from backend directory
+cd backend
+docker build -t spring-angular-template/backend:latest .
+
+# Tag for registry
+docker tag spring-angular-template/backend:latest myregistry.com/backend:1.0.0
+```
+
+### Running Standalone
+
+```bash
+# Run backend container (requires database)
+docker run -d \
+  --name spring-backend \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/apidb \
+  -e SPRING_DATASOURCE_USERNAME=postgres \
+  -e SPRING_DATASOURCE_PASSWORD=postgres \
+  spring-angular-template/backend:latest
+
+# View logs
+docker logs -f spring-backend
+
+# Access health check
+curl http://localhost:8080/actuator/health
+```
+
+### Production Stack
+
+For complete production environment with database and frontend:
+
+```bash
+# From project root
+npm run docker:prod
+
+# Access API
+curl http://localhost:8080/api/v1/messages
+```
+
+### Environment Variables
+
+All Spring Boot properties can be configured via environment variables:
+
+```bash
+docker run -d \
+  -e SPRING_PROFILES_ACTIVE=docker \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/apidb \
+  -e SPRING_DATASOURCE_USERNAME=postgres \
+  -e SPRING_DATASOURCE_PASSWORD=secret \
+  -e SPRING_REDIS_HOST=redis \
+  -e CACHE_MAX_SIZE=5000 \
+  spring-angular-template/backend:latest
+```
+
+Notes:
+- `SPRING_REDIS_HOST` applies to the `main` branch.
+- `CACHE_MAX_SIZE` applies to `java-25-caffeine-angular-21`.
+
+### Build Optimization
+
+The Dockerfile uses `.dockerignore` to exclude:
+- Build artifacts (`target/`)
+- IDE files (`.idea/`, `.vscode/`)
+- Documentation files
+- Git repository
+
+This reduces build context and speeds up image builds.
+
+### Health Checks
+
+The application exposes a health endpoint via Spring Boot Actuator:
+- **Health:** `GET /actuator/health`
+
+This is used by `docker-compose.prod.yml` for container health monitoring.
+
+### Further Documentation
+
+See [DOCKER.md](../DOCKER.md) for comprehensive Docker documentation including:
+- Production deployment strategies
+- Security hardening
+- CI/CD integration
+- Troubleshooting
 
 ## 🔗 Related Documentation
 

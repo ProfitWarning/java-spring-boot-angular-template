@@ -1,0 +1,154 @@
+# Production Docker Compose configuration for local testing
+# This simulates a production environment on your local machine
+# 
+# Quick start:
+#   npm run docker:build      # Build images
+#   npm run docker:prod:up    # Start services
+#   npm run docker:prod:logs  # View logs
+#   npm run docker:prod:down  # Stop services
+#
+# Access:
+#   Frontend:  http://localhost:4200
+#   Backend:   http://localhost:8080
+#   Database:  Internal only (see db service for debugging access)
+
+services:
+  # ============================================
+  # Backend: Spring Boot Application
+  # ============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: spring-backend-prod
+    networks:
+      - app-tier
+      - db-tier
+    environment:
+      # Default values for local testing
+      # ⚠️ CHANGE THESE FOR REAL PRODUCTION DEPLOYMENT! ⚠️
+      # 
+      # For production, use .env file instead:
+      # 1. Copy .env.prod.example to .env.prod
+      # 2. Update values with real credentials
+      # 3. Uncomment 'env_file' below and comment out 'environment' section
+      # 
+      # env_file:
+      #   - .env.prod
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/apidb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      # Redis configuration (main branch only)
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # ============================================
+  # Frontend: Angular Application (Nginx)
+  # ============================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: angular-frontend-prod
+    networks:
+      - app-tier
+    ports:
+      # External port 4200 (development-like) → Internal nginx port 8080
+      # To use standard HTTP port 80 externally, change to: "80:8080"
+      # Note: Port 80 may require sudo/admin permissions on some systems
+      - "4200:8080"
+    environment:
+      # Runtime config via nginx envsubst templates
+      # For production, move these to .env.prod and enable env_file above
+      # to keep environment-specific values out of docker-compose.prod.yml
+      - NGINX_HOST=localhost
+      - BACKEND_URL=http://backend:8080
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ============================================
+  # Database: PostgreSQL
+  # ============================================
+  db:
+    image: postgres:17-alpine
+    container_name: postgres-prod
+    networks:
+      - db-tier
+    environment:
+      - POSTGRES_DB=apidb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-prod-data:/var/lib/postgresql/data
+    # Database is NOT exposed to host by default (production best practice)
+    # To access with pgAdmin/DBeaver for debugging, uncomment the line below:
+    # ports:
+    #   - "5433:5432"  # Use different port to avoid conflict with dev database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ============================================
+  # Cache: Redis (Main branch only)
+  # ============================================
+  # Note: This service is removed in the java-25-caffeine-angular-21 branch
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis-prod
+    networks:
+      - app-tier
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    volumes:
+      - redis-prod-data:/data
+    # Redis is NOT exposed to host (only accessible by backend)
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+# ============================================
+# Networks: Segmented for Security
+# ============================================
+networks:
+  # Public network: Frontend ↔ Backend communication
+  app-tier:
+    name: spring-angular-app-tier
+    driver: bridge
+  
+  # Private network: Backend ↔ Database communication
+  # Database is isolated from frontend
+  db-tier:
+    name: spring-angular-db-tier
+    driver: bridge
+    # For maximum security in real production, add:
+    # internal: true  # Prevents external access entirely
+
+# ============================================
+# Volumes: Persistent Data Storage
+# ============================================
+volumes:
+  postgres-prod-data:
+    name: spring-angular-postgres-prod
+  redis-prod-data:
+    name: spring-angular-redis-prod
